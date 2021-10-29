@@ -18,7 +18,6 @@ import javax.persistence.Table;
 
 import com.educandoweb.course.entities.enums.OrderStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "tb_order")
@@ -32,7 +31,7 @@ public class Order implements Serializable {
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
 	private Instant moment;
 
-	@JsonIgnore
+	
 	private Integer orderStatus;
 
 	@ManyToOne
@@ -100,6 +99,14 @@ public class Order implements Serializable {
 
 	public Set<OrderItem> getItems() {
 		return items;
+	}
+	
+	public Double getTotal() {
+		double sum = 0.0;
+		for (OrderItem x : items) {
+			sum += x.getSubTotal();
+		}
+		return sum;
 	}
 
 	@Override
